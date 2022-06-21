@@ -10,19 +10,15 @@ import androidx.compose.material.Icon
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import com.example.loginpage.Compents.Screens
 
 import  com.example.loginpage.R
-import com.example.loginpage.ui.theme.TextBackGround
 import com.example.loginpage.ui.theme.Textcolor
 
 

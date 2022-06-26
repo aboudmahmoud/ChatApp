@@ -31,7 +31,7 @@ import com.example.loginpage.ui.theme.Textcolor
             Spacer(modifier = Modifier.padding(50.dp))
             TextUsebla("Create Account")
             Spacer(modifier =Modifier.padding(20.dp))
-            TF(hint = "Name") {
+            var Namr:String=TF(hint = "Name") {
                 Icon(
                     painter = painterResource(R.drawable.ic_un),
                     contentDescription = "emailIcon",
@@ -40,7 +40,7 @@ import com.example.loginpage.ui.theme.Textcolor
             }
 
             Spacer(modifier =Modifier.padding(20.dp))
-            TF(hint = "Email") {
+          var Email:String= TF(hint = "Email") {
                 Icon(
                     painter = painterResource(R.drawable.ic_email),
                     contentDescription = "emailIcon",

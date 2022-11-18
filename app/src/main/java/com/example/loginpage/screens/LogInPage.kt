@@ -1,4 +1,4 @@
-package com.example.loginpage.Page
+package com.example.loginpage.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.loginpage.Compents.Screens
+import com.example.loginpage.utils.Screens
 import com.example.loginpage.R
 import com.example.loginpage.ui.theme.Textcolor
 
@@ -23,15 +23,15 @@ fun LogInPage(
         horizontalAlignment = CenterHorizontally
     ) {
         Spacer(modifier = Modifier.padding(50.dp))
-        TextUsebla("Login")
+        TextUsebla(Hint="Login")
         Spacer(modifier = Modifier.padding(20.dp))
-        TF(hint = "Email") {
-            Icon(
-                painter = painterResource(R.drawable.ic_email),
-                contentDescription = "emailIcon",
-                tint = Textcolor
-            )
-        }
+        TF(hint = "Email", Icone= { Icon(
+            painter = painterResource(R.drawable.ic_email),
+            contentDescription = "emailIcon",
+            tint = Textcolor
+        )},)
+
+
 
         Spacer(modifier = Modifier.padding(20.dp))
         PasswordTf()
@@ -57,8 +57,8 @@ fun LogInPage(
                 .align(Start).padding(10.dp))
         {
             Row() {
-                TextUsebla("You don't have an account?")
-                TextUsebla("sign up", Enabled = true, Action={
+                TextUsebla(Hint="You don't have an account?")
+                TextUsebla(Hint="sign up", Enabled = true, Action={
                     navController.navigate(Screens.Regster1.route)
                 } )
             }

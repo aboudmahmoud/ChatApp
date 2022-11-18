@@ -1,4 +1,4 @@
-package com.example.loginpage.Page
+package com.example.loginpage.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.Moudle.User.CurrentOnlieOff
 import com.example.loginpage.Moudle.User.UserInfo
@@ -36,12 +37,12 @@ fun HomePage(
             }
         }
         Spacer(modifier = Modifier.padding(10.dp))
-        getUserData()
+        GetUserData()
     }
 }
 
 @Composable
-fun getUserData() {
+fun GetUserData() {
 
     val theList = listOf(
         CurrenUserStatis(
@@ -120,6 +121,38 @@ fun getUserData() {
 }
 
 
+@Composable
+fun UserDisplay(
+    currentUser: CurrenUserStatis,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .padding(10.dp)
+            .height(100.dp)
+    ) {
+        Row {
+            Spacer(
+                modifier = modifier
+                    .width(10.dp)
+                    .height(20.dp)
+            )
+            Image(
+                painter = rememberAsyncImagePainter(currentUser.userInfo.UserImage),
+                contentDescription = "serch", modifier = modifier
+                    .align(Alignment.CenterVertically)
+                    .width(50.dp)
+                    .height(50.dp)
+            )
+            Spacer(modifier = modifier.width(20.dp))
+            Column {
+                TextUsebla(Hint=currentUser.userInfo.UserName!!)
+                Spacer(modifier = modifier.height(20.dp))
+                TextUsebla(Hint=currentUser.crunntStatus.status)
+            }
+        }
+    }
+}
 
 
 /*listOf(  Text(text=item.UserName,

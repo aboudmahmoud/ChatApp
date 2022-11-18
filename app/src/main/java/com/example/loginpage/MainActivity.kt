@@ -7,17 +7,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 
-import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.example.loginpage.Page.BottomBar
-import com.example.loginpage.Page.Nagvation
-import com.example.loginpage.Page.RegsterPage1
-import com.example.loginpage.Page.navhandMadeIt
+import com.example.loginpage.Compents.NavhandMadeIt
+import com.example.loginpage.screens.Nagvation
+
 import com.example.loginpage.ui.theme.Balke
 import com.example.loginpage.ui.theme.LoginPageTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 
@@ -32,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Scaffold(
-                    bottomBar = { navhandMadeIt(navController = navController) },
+                    bottomBar = { NavhandMadeIt(navController = navController) },
                     containerColor = Balke,
                     content ={
                             innerPadding ->

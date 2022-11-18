@@ -1,4 +1,4 @@
-package com.example.loginpage.Page
+package com.example.loginpage.screens
 
 
 import androidx.compose.foundation.Image
@@ -16,44 +16,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
-import com.example.loginpage.Compents.Screens
+import com.example.loginpage.utils.Screens
 
 import  com.example.loginpage.R
 import com.example.loginpage.ui.theme.Textcolor
+import com.example.loginpage.utils.Constans
+import com.example.loginpage.utils.Constans.RegsterPage2Posation
 
 
 @Composable
     fun RegsterPage1(
-    navController: NavController
+    Scroolboussion:(Int)->Unit,
+    onChangesName:(String)->Unit={},
+    onChangesEmail:(String)->Unit={}
     ) {
         Column(modifier = Modifier.padding(10.dp).fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.padding(50.dp))
-            TextUsebla("Create Account")
+            TextUsebla(Hint="Create Account")
             Spacer(modifier =Modifier.padding(20.dp))
-            var Namr:String=TF(hint = "Name") {
+            TF(hint = "Name", Icone = {
                 Icon(
                     painter = painterResource(R.drawable.ic_un),
                     contentDescription = "emailIcon",
                     tint = Textcolor
                 )
-            }
+            }, onChanges = onChangesName)
 
             Spacer(modifier =Modifier.padding(20.dp))
-          var Email:String= TF(hint = "Email") {
-                Icon(
-                    painter = painterResource(R.drawable.ic_email),
-                    contentDescription = "emailIcon",
-                    tint = Textcolor
-                )
-            }
+      TF(hint = "Email",Icone={
+          Icon(
+              painter = painterResource(R.drawable.ic_email),
+              contentDescription = "emailIcon",
+              tint = Textcolor
+          )
+      }, onChanges = onChangesEmail)
             Spacer(modifier = Modifier.padding(20.dp))
             BtnToUse(textBtn="Continue",
                 {
-                    navController.navigate(Screens.Regster2.route)
+                    Scroolboussion(
+                      RegsterPage2Posation
+                    )
+                   // navController.navigate(Screens.Regster2.route)
                 })
             Spacer(modifier = Modifier.padding(20.dp))
-            Image(painter =painterResource(R.drawable.ic_ponints) , contentDescription = "Points")
+         //   Image(painter =painterResource(R.drawable.ic_ponints) , contentDescription = "Points")
 
         }
     }

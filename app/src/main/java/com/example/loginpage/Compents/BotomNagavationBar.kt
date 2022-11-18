@@ -2,6 +2,7 @@ package com.example.loginpage.Compents
 
 
 import com.example.loginpage.R
+import com.example.loginpage.utils.Screens
 
 sealed class BotomNagavationBar(
     val route: String,
@@ -12,12 +13,12 @@ sealed class BotomNagavationBar(
         icon = R.drawable.ic_icon_awesome_home
     )
     object Proflie:BotomNagavationBar(
-        route=Screens.HomePage.route,
+        route= Screens.HomePage.route,
         icon= R.drawable.ic_icon_awesome_home
     )
 
     object Chat:BotomNagavationBar(
-        route=Screens.HomePage.route,
+        route= Screens.HomePage.route,
         icon= R.drawable.ic_icon_awesome_home
     )
 

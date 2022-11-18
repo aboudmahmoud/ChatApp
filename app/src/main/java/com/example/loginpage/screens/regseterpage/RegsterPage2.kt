@@ -1,4 +1,4 @@
-package com.example.loginpage.Page
+package com.example.loginpage.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -8,19 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.loginpage.Compents.Screens
+import com.example.loginpage.utils.Screens
 import com.example.loginpage.R
 
 @Composable
 fun RegsterPage2(
-    navController: NavController
+    onChanges:(String)->Unit={},
+    onClick:()->Unit={},
 ) {
     Column(modifier = Modifier
         .padding(10.dp)
         .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.padding(50.dp))
-        TextUsebla("Almost Done")
+        TextUsebla(Hint="Almost Done")
         Spacer(modifier = Modifier.padding(20.dp))
       Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
@@ -32,14 +33,10 @@ fun RegsterPage2(
       }
 
         Spacer(modifier = Modifier.padding(20.dp))
-        PasswordTf()
+        PasswordTf(onChanedPassword = onChanges)
         Spacer(modifier = Modifier.padding(20.dp))
-        BtnToUse(textBtn="Create Account",
-            {
-                navController.navigate(Screens.Login.route)
-            })
-        Spacer(modifier = Modifier.padding(20.dp))
-        Image(painter = painterResource(R.drawable.ic_ponints1) , contentDescription = "Points")
+        BtnToUse(textBtn="Create Account",onClick= onClick)
+    //    Image(painter = painterResource(R.drawable.ic_ponints1) , contentDescription = "Points")
 
     }
 }

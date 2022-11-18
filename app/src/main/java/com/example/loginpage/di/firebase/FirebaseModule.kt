@@ -1,4 +1,4 @@
-package com.example.loginpage.Database.FireBase
+package com.example.loginpage.di.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

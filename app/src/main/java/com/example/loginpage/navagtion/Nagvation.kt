@@ -1,10 +1,11 @@
-package com.example.loginpage.Page
+package com.example.loginpage.screens
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.loginpage.Compents.Screens
+import com.example.loginpage.screens.regseterpage.ResgsterPageCompineantion
+import com.example.loginpage.utils.Screens
 
 
 
@@ -13,14 +14,11 @@ import com.example.loginpage.Compents.Screens
 fun Nagvation(navController: NavHostController) {
 
     val navController = navController
-    NavHost(navController = navController, startDestination = Screens.Regster1.route) {
-        composable(route = Screens.Regster1.route) {
-            RegsterPage1(navController = navController)
+    NavHost(navController = navController, startDestination = Screens.Regster.route) {
+        composable(route = Screens.Regster.route) {
+            ResgsterPageCompineantion()
         }
-        composable(Screens.Regster2.route) {
-            RegsterPage2(navController = navController)
 
-        }
         composable(Screens.Login.route) {
             LogInPage(navController = navController)
 

@@ -1,4 +1,4 @@
-package com.example.loginpage.Database.MVVM.ViewStatidel
+package com.example.loginpage.data.MVVM.ViewStatidel
 
 sealed class MainViewState{
     //idle

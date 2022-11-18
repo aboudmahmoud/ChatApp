@@ -35,7 +35,7 @@ private var _useInfo by mutableStateOf(UserInfo())
         viewModelScope.launch {
             IntentChanenl.consumeAsFlow().collect {
                 when (it) {
-                    is RegsterIntent.RegsttesUser -> adduseR(it.user)
+                    is RegsterIntent.RegsttesUser -> adduseR(useInfo)
                 }
 
             }

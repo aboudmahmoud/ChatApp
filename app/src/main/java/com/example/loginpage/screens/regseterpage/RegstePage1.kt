@@ -1,7 +1,6 @@
 package com.example.loginpage.screens
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,12 +14,9 @@ import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
-import com.example.loginpage.utils.Screens
 
 import  com.example.loginpage.R
 import com.example.loginpage.ui.theme.Textcolor
-import com.example.loginpage.utils.Constans
 import com.example.loginpage.utils.Constans.RegsterPage2Posation
 
 
@@ -35,7 +31,7 @@ import com.example.loginpage.utils.Constans.RegsterPage2Posation
             Spacer(modifier = Modifier.padding(50.dp))
             TextUsebla(Hint="Create Account")
             Spacer(modifier =Modifier.padding(20.dp))
-            TF(hint = "Name", Icone = {
+            CoustemMadeTextField(hint = "Name", Icone = {
                 Icon(
                     painter = painterResource(R.drawable.ic_un),
                     contentDescription = "emailIcon",
@@ -44,7 +40,7 @@ import com.example.loginpage.utils.Constans.RegsterPage2Posation
             }, onChanges = onChangesName)
 
             Spacer(modifier =Modifier.padding(20.dp))
-      TF(hint = "Email",Icone={
+      CoustemMadeTextField(hint = "Email",Icone={
           Icon(
               painter = painterResource(R.drawable.ic_email),
               contentDescription = "emailIcon",
@@ -52,8 +48,8 @@ import com.example.loginpage.utils.Constans.RegsterPage2Posation
           )
       }, onChanges = onChangesEmail)
             Spacer(modifier = Modifier.padding(20.dp))
-            BtnToUse(textBtn="Continue",
-                {
+            BtnToUse(textBtn="Continue", onClick =
+              {
                     Scroolboussion(
                       RegsterPage2Posation
                     )

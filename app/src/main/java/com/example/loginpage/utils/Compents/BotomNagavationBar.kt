@@ -1,4 +1,4 @@
-package com.example.loginpage.Compents
+package com.example.loginpage.utils.Compents
 
 
 import com.example.loginpage.R
@@ -12,12 +12,12 @@ sealed class BotomNagavationBar(
         route = Screens.HomePage.route,
         icon = R.drawable.ic_icon_awesome_home
     )
-    object Proflie:BotomNagavationBar(
+    object Proflie: BotomNagavationBar(
         route= Screens.HomePage.route,
         icon= R.drawable.ic_icon_awesome_home
     )
 
-    object Chat:BotomNagavationBar(
+    object Chat: BotomNagavationBar(
         route= Screens.HomePage.route,
         icon= R.drawable.ic_icon_awesome_home
     )

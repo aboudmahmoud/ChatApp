@@ -1,6 +1,7 @@
 package com.example.loginpage.screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,9 +15,17 @@ import com.example.loginpage.utils.Screens
 fun Nagvation(navController: NavHostController) {
 
     val navController = navController
+    val nagivate = remember<(String) -> Unit> {
+        {
+
+            navController.navigate(it){
+                popUpTo(it)
+            }
+        }
+    }
     NavHost(navController = navController, startDestination = Screens.Regster.route) {
         composable(route = Screens.Regster.route) {
-            ResgsterPageCompineantion()
+            ResgsterPageCompineantion(onNavgite = nagivate)
         }
 
         composable(Screens.Login.route) {

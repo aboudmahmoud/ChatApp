@@ -9,7 +9,7 @@ import androidx.compose.material3.Scaffold
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.loginpage.Compents.NavhandMadeIt
+import com.example.loginpage.utils.Compents.NavhandMadeIt
 import com.example.loginpage.screens.Nagvation
 
 import com.example.loginpage.ui.theme.Balke
@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             LoginPageTheme {
-                // A surface container using the 'background' color from the theme
                 val navController = rememberNavController()
 
                 Scaffold(

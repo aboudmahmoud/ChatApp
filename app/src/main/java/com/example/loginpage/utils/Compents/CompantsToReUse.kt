@@ -25,7 +25,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.loginpage.Compents.BotomNagavationBar
+import com.example.loginpage.utils.Compents.BotomNagavationBar
 import com.example.loginpage.R
 import com.example.loginpage.ui.theme.*
 
@@ -60,7 +60,7 @@ fun BtnToUse(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TF(
+fun CoustemMadeTextField(
     hint: String,
     Icone: @Composable() (() -> Unit),
     onChanges:(String)->Unit={}
@@ -98,7 +98,7 @@ fun PasswordTf(
         onValueChange = { password = it
             onChanedPassword(it)
                         },
-        placeholder = { TextUsebla(Hint="********") },
+        placeholder = { TextUsebla(Hint="insert ur password here") },
         colors = TextFieldDefaults.textFieldColors(
             containerColor = TextBackGround,
             textColor = Textcolor,
@@ -197,7 +197,8 @@ private fun CustomCircularProgressBar(modifier: Modifier = Modifier) {
 }
 @Composable
 fun CoustemDiloage(dialogOpene:Boolean,
-                   errorMessage:String) {
+                   HeadlineMessage:String,
+                   MainMessage:String) {
     var dialogOpen by remember {
         mutableStateOf(dialogOpene)
     }
@@ -226,10 +227,10 @@ fun CoustemDiloage(dialogOpene:Boolean,
                 }
             },
             title = {
-                Text(text = "Error")
+                Text(text = HeadlineMessage)
             },
             text = {
-                Text(text = errorMessage)
+                Text(text = MainMessage)
             },
             modifier = Modifier // Set the width and padding
                 .fillMaxWidth()

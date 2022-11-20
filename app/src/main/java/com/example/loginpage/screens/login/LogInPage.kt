@@ -25,7 +25,7 @@ fun LogInPage(
         Spacer(modifier = Modifier.padding(50.dp))
         TextUsebla(Hint="Login")
         Spacer(modifier = Modifier.padding(20.dp))
-        TF(hint = "Email", Icone= { Icon(
+        CoustemMadeTextField(hint = "Email", Icone= { Icon(
             painter = painterResource(R.drawable.ic_email),
             contentDescription = "emailIcon",
             tint = Textcolor
@@ -35,14 +35,7 @@ fun LogInPage(
 
         Spacer(modifier = Modifier.padding(20.dp))
         PasswordTf()
-        /* Spacer(modifier = Modifier.padding(5.dp))
- Box(
- modifier = Modifier.padding(10.dp).align(Start)
- )
- {
 
-     TextUsebla("did u forget your password?" )
- }*/
 
         Spacer(modifier = Modifier.padding(20.dp))
         BtnToUse(textBtn="LogIn",
@@ -59,7 +52,7 @@ fun LogInPage(
             Row() {
                 TextUsebla(Hint="You don't have an account?")
                 TextUsebla(Hint="sign up", Enabled = true, Action={
-                    navController.navigate(Screens.Regster1.route)
+                    navController.navigate(Screens.Regster.route)
                 } )
             }
         }

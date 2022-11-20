@@ -1,4 +1,4 @@
-package com.example.loginpage.di.firebase
+package com.example.loginpage.di.appmoule
 
 import com.example.loginpage.data.SeriveQurey.FirebaseSirvase
 import com.google.firebase.firestore.FirebaseFirestore

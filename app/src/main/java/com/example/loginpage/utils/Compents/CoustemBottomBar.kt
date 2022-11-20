@@ -1,4 +1,4 @@
-package com.example.loginpage.Compents
+package com.example.loginpage.utils.Compents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

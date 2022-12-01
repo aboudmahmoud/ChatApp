@@ -2,6 +2,7 @@ package com.example.loginpage.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,6 +12,7 @@ import androidx.navigation.NavController
 import com.example.loginpage.utils.Screens
 import com.example.loginpage.R
 
+@ExperimentalMaterial3Api
 @Composable
 fun RegsterPage2(
     onChanges:(String)->Unit={},

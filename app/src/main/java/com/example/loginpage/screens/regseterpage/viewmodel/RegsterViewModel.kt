@@ -1,14 +1,16 @@
-package com.example.loginpage.screens.regseterpage
+package com.example.loginpage.screens.regseterpage.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import kotlinx.coroutines.channels.Channel
 
 import com.example.loginpage.Moudle.User.UserInfo
-import com.example.loginpage.data.SeriveQurey.FirebaseSirvase
-import com.example.loginpage.data.SeriveQurey.UiState
-import com.example.loginpage.utils.Constans
+import com.example.loginpage.utils.helper.UiState
+import com.example.loginpage.data.SeriveQurey.fireauth.RegsterImplements
+import com.example.loginpage.utils.helper.ErrorInputValdtion
+import com.example.loginpage.utils.MainActionIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,16 +20,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegsterViewModel @Inject constructor(
-    private val repsotry: FirebaseSirvase,
+    private val repsotry: RegsterImplements,
 ) : ViewModel() {
-    val IntentChanenl = Channel<RegsterIntent> { Channel.UNLIMITED }
+    val IntentChanenl = Channel<MainActionIntent> { Channel.UNLIMITED }
 
     private val _addUser = MutableStateFlow<UiState<String>>(UiState.Idel)
     val addUser = _addUser.asStateFlow()
-     var ErrorStatus=false
 
+    var ErrorStatus by mutableStateOf(false)
+private var _curentUserInfo by mutableStateOf(CurrenUserStatis())
     private var _useInfo by mutableStateOf(UserInfo())
     val useInfo = _useInfo
+
+    lateinit var errorMesse: ErrorInputValdtion
 
     init {
         processIntent()
@@ -37,53 +42,27 @@ class RegsterViewModel @Inject constructor(
     fun processIntent() {
 
         viewModelScope.launch {
-            _addUser.value = UiState.Idel
             IntentChanenl.consumeAsFlow().collect {
 
                 when (it) {
-                    is RegsterIntent.RegsttesUser -> AddUser()
+                    is MainActionIntent.RegsttesUser -> AddUser()
                 }
             }
         }
     }
 
     private fun AddUser() {
-
+        _curentUserInfo.userInfo=_useInfo
         _addUser.value = UiState.Loading
-        if (checkUserMainInfo()) {
-            _addUser.value = UiState.Failure("UI Error :  Plase dont let any Field empty")
-
-        } else {
-            Valdatieemail()
-        }
-    }
-
-    private fun checkUserMainInfo(): Boolean {
-        return _useInfo.UserEmail == null
-                || _useInfo.UserName == null ||
-                _useInfo.UserPassword == null
-    }
-
-    private fun Valdatieemail() {
-        if (Constans.isValidEmail(_useInfo.UserEmail!!)) {
-            RegsterUser()
-
-        } else {
-
-            _addUser.value = UiState.Failure("UI Error : PLase Inser Vaild Email")
-        }
-    }
-
-    private fun RegsterUser() {
-        repsotry.registerUser(_useInfo) {
+        repsotry.regsterUser(_curentUserInfo) {
             viewModelScope.launch {
                 _addUser.emit(it)
 //            _addUser.value = it }
             }
 
-
         }
     }
+
 
     fun setUsrerName(username: String) {
         _useInfo.UserName = username

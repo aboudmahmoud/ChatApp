@@ -2,8 +2,10 @@ package com.example.loginpage.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material3.*
@@ -13,10 +15,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
@@ -27,7 +32,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.loginpage.utils.Compents.BotomNagavationBar
 import com.example.loginpage.R
+
 import com.example.loginpage.ui.theme.*
+
 
 @Composable
 fun TextUsebla(
@@ -44,11 +51,9 @@ fun TextUsebla(
 
 @Composable
 fun BtnToUse(
-
     textBtn: String,
     onClick: () -> Unit,
-
-) {
+    ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = BtnBackground),
@@ -58,7 +63,7 @@ fun BtnToUse(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun CoustemMadeTextField(
     hint: String,
@@ -85,13 +90,13 @@ fun CoustemMadeTextField(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun PasswordTf(
     onChanedPassword : (String) -> Unit ={}
 ) {
     var password by rememberSaveable { mutableStateOf("") }
-    //  var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var passwordVisible by rememberSaveable { mutableStateOf(true) }
 
     TextField(
         value = password,
@@ -102,16 +107,21 @@ fun PasswordTf(
         colors = TextFieldDefaults.textFieldColors(
             containerColor = TextBackGround,
             textColor = Textcolor,
-            focusedIndicatorColor = TextBackGround
+            focusedIndicatorColor = TextBackGround,
+                    unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            disabledTextColor = Color.Transparent,
         ),
         leadingIcon = {
+        IconButton(onClick = { passwordVisible=!passwordVisible }) {
             Icon(
-                painter = painterResource(R.drawable.ic_lock),
+                painter = painterResource( if(passwordVisible) R.drawable.ic_lock else R.drawable.unlock),
                 contentDescription = "emailIcon",
                 tint = Textcolor
             )
+        }
         },
-        visualTransformation = PasswordVisualTransformation(),
+        visualTransformation = if(passwordVisible)PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
     )
 
@@ -180,7 +190,9 @@ fun RowScope.AddItem(
 
 @Composable
 fun FollBoxScrie() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+
+    Box(modifier = Modifier.fillMaxSize().background(color =Balke), contentAlignment = Alignment.Center) {
         CustomCircularProgressBar()
     }
 }
@@ -193,12 +205,11 @@ private fun CustomCircularProgressBar(modifier: Modifier = Modifier) {
         strokeWidth = ProgressIndicatorDefaults.CircularStrokeWidth
 
     )
-
 }
 @Composable
 fun CoustemDiloage(dialogOpene:Boolean,
                    HeadlineMessage:String,
-                   MainMessage:String) {
+                   MainMessage:String, onClick: (Boolean) -> Unit={}) {
     var dialogOpen by remember {
         mutableStateOf(dialogOpene)
     }
@@ -210,11 +221,13 @@ fun CoustemDiloage(dialogOpene:Boolean,
                 // button. If you want to disable that functionality,
                 // simply leave this block empty.
                 dialogOpen = false
+                onClick(false)
             },
             confirmButton = {
                 TextButton(onClick = {
                     // perform the confirm action
                     dialogOpen = false
+                    onClick(false)
                 }) {
                     Text(text = "Confirm")
                 }
@@ -222,6 +235,7 @@ fun CoustemDiloage(dialogOpene:Boolean,
             dismissButton = {
                 TextButton(onClick = {
                     dialogOpen = false
+                    onClick(false)
                 }) {
                     Text(text = "Dismiss")
                 }

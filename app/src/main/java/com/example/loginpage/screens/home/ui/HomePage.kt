@@ -1,24 +1,29 @@
 package com.example.loginpage.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.loginpage.Moudle.User.CurrenUserStatis
-import com.example.loginpage.Moudle.User.CurrentOnlieOff
-import com.example.loginpage.Moudle.User.UserInfo
 import com.example.loginpage.R
+import com.example.loginpage.screens.home.helper.HomeIntnent
+import com.example.loginpage.screens.home.viewmodel.HomeViewModel
+import com.example.loginpage.utils.Screens
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomePage(
-
+    onNavgite: (String) -> Unit,
+homeViewModel: HomeViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .padding(10.dp)
@@ -28,7 +33,16 @@ fun HomePage(
         Box(modifier = Modifier.fillMaxWidth())
         {
             Row(modifier = Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-                Image(painter = painterResource(R.drawable.ic_lines), contentDescription = "lines")
+                Image(painter = painterResource(R.drawable.ic_lines), contentDescription = "lines",
+                    modifier = Modifier.clickable {
+                        scope.launch {
+                            homeViewModel.IntentChanenl.send(HomeIntnent.logOut{
+
+                                    onNavgite(Screens.Walcom.route)
+
+                            })
+                        }
+                })
 
                 Image(
                     painter = painterResource(R.drawable.ic_search_1_),
@@ -44,7 +58,7 @@ fun HomePage(
 @Composable
 fun GetUserData() {
 
-    val theList = listOf(
+  /*  val theList = listOf(
         CurrenUserStatis(
             UserInfo(
                 "Aboud",
@@ -106,13 +120,13 @@ fun GetUserData() {
             )
         ),
 
-    )
+    )*/
 
-    LazyColumn(modifier = Modifier.fillMaxWidth()){
+   /* LazyColumn(modifier = Modifier.fillMaxWidth()){
         itemsIndexed(theList){
             index, item ->  UserDisplay(item)
-        }
-    }
+        } }*/
+
 
 
 
@@ -138,7 +152,7 @@ fun UserDisplay(
                     .height(20.dp)
             )
             Image(
-                painter = rememberAsyncImagePainter(currentUser.userInfo.UserImage),
+                painter = rememberAsyncImagePainter(currentUser.userInfo!!.UserImage),
                 contentDescription = "serch", modifier = modifier
                     .align(Alignment.CenterVertically)
                     .width(50.dp)
@@ -146,7 +160,7 @@ fun UserDisplay(
             )
             Spacer(modifier = modifier.width(20.dp))
             Column {
-                TextUsebla(Hint=currentUser.userInfo.UserName!!)
+                TextUsebla(Hint=currentUser.userInfo!!.UserName!!)
                 Spacer(modifier = modifier.height(20.dp))
                 TextUsebla(Hint=currentUser.crunntStatus.status)
             }

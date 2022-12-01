@@ -1,4 +1,4 @@
-package com.example.loginpage.data.SeriveQurey
+package com.example.loginpage.utils.helper
 
 sealed class UiState<out T> {
     object Idel: UiState<Nothing>()

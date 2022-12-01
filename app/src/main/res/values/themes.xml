@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.LoginPage" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.CustomSplashScreenTheme" parent="Theme.SplashScreen">
+    <item name="windowSplashScreenBackground">@color/white</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/undraw_popular_re_mlfe</item>
+    <item name="windowSplashScreenAnimationDuration">600</item>
+    <item name="postSplashScreenTheme">@style/Theme.LoginPage</item>
+    </style>
 </resources>

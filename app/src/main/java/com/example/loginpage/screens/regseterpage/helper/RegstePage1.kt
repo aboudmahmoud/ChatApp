@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 
 import androidx.compose.runtime.Composable
@@ -20,9 +21,10 @@ import com.example.loginpage.ui.theme.Textcolor
 import com.example.loginpage.utils.Constans.RegsterPage2Posation
 
 
+@ExperimentalMaterial3Api
 @Composable
     fun RegsterPage1(
-    Scroolboussion:(Int)->Unit,
+    scroolTo:(Int)->Unit,
     onChangesName:(String)->Unit={},
     onChangesEmail:(String)->Unit={}
     ) {
@@ -50,7 +52,7 @@ import com.example.loginpage.utils.Constans.RegsterPage2Posation
             Spacer(modifier = Modifier.padding(20.dp))
             BtnToUse(textBtn="Continue", onClick =
               {
-                    Scroolboussion(
+                    scroolTo(
                       RegsterPage2Posation
                     )
                    // navController.navigate(Screens.Regster2.route)

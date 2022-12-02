@@ -42,7 +42,7 @@ navagtionViewModle: NagvitionViewModel= hiltViewModel()
 
         }
         composable(Screens.HomePage.route) {
-            HomePage(onNavgite = nagivate)
+            HomePage(onNavgite = nagivate, userInfo = navagtionViewModle.userData!!)
         }
         composable(Screens.Walcom.route) {
             WalcomePage( onNavgite=nagivateWithoutBopup)

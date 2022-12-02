@@ -3,6 +3,8 @@ package com.example.loginpage.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -10,16 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.loginpage.Moudle.User.CurrenUserStatis
+
 import com.example.loginpage.R
 import com.example.loginpage.screens.home.helper.HomeIntnent
 import com.example.loginpage.screens.home.viewmodel.HomeViewModel
 import com.example.loginpage.utils.Screens
+import com.example.loginpage.utils.helper.UiState
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomePage(
+    userInfo: CurrenUserStatis,
     onNavgite: (String) -> Unit,
 homeViewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -51,13 +58,34 @@ homeViewModel: HomeViewModel = hiltViewModel()
             }
         }
         Spacer(modifier = Modifier.padding(10.dp))
-        GetUserData()
+        GetUserData(userInfo=userInfo,homeViewModel=homeViewModel)
     }
 }
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun GetUserData() {
+fun GetUserData( userInfo: CurrenUserStatis,homeViewModel: HomeViewModel ) {
+when(val res=homeViewModel.dataUser.collectAsStateWithLifecycle().value){
+    is UiState.Failure -> {
+        CoustemDiloage(
+            dialogOpene = true,
+            HeadlineMessage = "Failure",
+            MainMessage = res.error!!
+        )
+    }
+    UiState.Idel -> {}
+    UiState.Loading -> {}
+    is UiState.Success -> {
+        LazyColumn(modifier = Modifier.fillMaxWidth()){
+            println(userInfo.userInfo!!.UserName)
+            itemsIndexed(res.data){ index, item ->
 
+                if(!item.userInfo!!.UserID.equals(userInfo.userInfo!!.UserID)){
+                    UserDisplay(item)
+                }
+                }
+    }
+}}
   /*  val theList = listOf(
         CurrenUserStatis(
             UserInfo(

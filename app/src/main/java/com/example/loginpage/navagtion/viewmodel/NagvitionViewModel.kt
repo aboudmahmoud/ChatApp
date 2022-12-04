@@ -1,4 +1,4 @@
-package com.example.loginpage.navagtion
+package com.example.loginpage.navagtion.viewmodel
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
@@ -23,6 +23,7 @@ class NagvitionViewModel @Inject constructor(
     var StatredDistation: String by mutableStateOf(Screens.Walcom.route)
 
     init {
+
         repsotry.getSession {
             viewModelScope.launch {
                 if (it != null) {

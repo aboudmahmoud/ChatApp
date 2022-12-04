@@ -77,14 +77,14 @@ when(val res=homeViewModel.dataUser.collectAsStateWithLifecycle().value){
     UiState.Loading -> {}
     is UiState.Success -> {
         LazyColumn(modifier = Modifier.fillMaxWidth()){
-            println(userInfo.userInfo!!.UserName)
+
             itemsIndexed(res.data){ index, item ->
 
                 if(!item.userInfo!!.UserID.equals(userInfo.userInfo!!.UserID)){
                     UserDisplay(item)
                 }
-                }
-    }
+            }
+        }
 }}
   /*  val theList = listOf(
         CurrenUserStatis(

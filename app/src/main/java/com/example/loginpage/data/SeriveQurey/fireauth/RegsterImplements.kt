@@ -144,10 +144,7 @@ class RegsterImplements(
                             result.invoke()
                         }
                         is UiState.Success -> {
-                            firesAuthe.signOut()
-                            appPreferences.edit().putString(SharedPrefConstants.USER_SESSION, null)
-                                .apply()
-                            result.invoke()
+                            regsterout(result)
                         }
                         else -> {}
                     }
@@ -158,6 +155,13 @@ class RegsterImplements(
         //
 
 
+    }
+
+    override fun regsterout(result: () -> Unit) {
+        firesAuthe.signOut()
+        appPreferences.edit().putString(SharedPrefConstants.USER_SESSION, null)
+            .apply()
+        result.invoke()
     }
 
     override fun storeSession(id: String, result: (CurrenUserStatis?) -> Unit) {

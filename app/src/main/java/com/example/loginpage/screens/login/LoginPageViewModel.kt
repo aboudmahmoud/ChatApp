@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.Moudle.User.UserInfo
 import com.example.loginpage.utils.helper.UiState
 import com.example.loginpage.data.SeriveQurey.fireauth.RegsterImplements
@@ -26,12 +27,15 @@ class LoginPageViewModel @Inject constructor(
     private val _LoginUser = MutableStateFlow<UiState<String>>(UiState.Idel)
     val LoginUserStatus = _LoginUser.asStateFlow()
     var ErrorStatus by mutableStateOf(false)
-    private var _useInfo by mutableStateOf(UserInfo())
-    val useInfo = _useInfo
+    private  val _useInfo = MutableStateFlow<CurrenUserStatis?>(CurrenUserStatis())
+    val useInfo = _useInfo.asStateFlow()
+    private var _userData by mutableStateOf(CurrenUserStatis())
+    var userData = _userData
     lateinit var errorMesse: ErrorInputValdtion
 
     init {
         processIntent()
+        _userData.userInfo= UserInfo()
     }
 
     //process
@@ -49,7 +53,7 @@ class LoginPageViewModel @Inject constructor(
 
     private fun loginInUser() {
         _LoginUser.value = UiState.Loading
-        repsotry.loginUser(_useInfo.UserEmail!!,_useInfo.UserPassword!!) {
+        repsotry.loginUser( _userData.userInfo?.UserEmail!!, _userData.userInfo?.UserPassword!!) {
             viewModelScope.launch {
                 _LoginUser.emit(it)
 
@@ -60,11 +64,23 @@ class LoginPageViewModel @Inject constructor(
 
 
     fun setEmail(userEmail: String) {
-        _useInfo.UserEmail = userEmail
+        _userData.userInfo?.UserEmail = userEmail
     }
 
     fun setPasswrod(userPassword: String) {
-        _useInfo.UserPassword = userPassword
+        _userData.userInfo?.UserPassword = userPassword
+    }
+
+      fun getSeesion(resulUnit:()->Unit){
+        repsotry.getSession {
+            viewModelScope.launch {
+                if (it != null) {
+                    _useInfo.emit(it)
+                    userData= useInfo.value!!
+                    resulUnit.invoke()
+                }
+            }
+        }
     }
 }
 

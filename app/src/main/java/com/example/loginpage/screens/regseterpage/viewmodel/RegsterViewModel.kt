@@ -28,7 +28,7 @@ class RegsterViewModel @Inject constructor(
     val addUser = _addUser.asStateFlow()
 
     var ErrorStatus by mutableStateOf(false)
-private var _curentUserInfo by mutableStateOf(CurrenUserStatis())
+    private var _curentUserInfo by mutableStateOf(CurrenUserStatis())
     private var _useInfo by mutableStateOf(UserInfo())
     val useInfo = _useInfo
 
@@ -52,7 +52,7 @@ private var _curentUserInfo by mutableStateOf(CurrenUserStatis())
     }
 
     private fun AddUser() {
-        _curentUserInfo.userInfo=_useInfo
+        _curentUserInfo.userInfo = _useInfo
         _addUser.value = UiState.Loading
         repsotry.regsterUser(_curentUserInfo) {
             viewModelScope.launch {

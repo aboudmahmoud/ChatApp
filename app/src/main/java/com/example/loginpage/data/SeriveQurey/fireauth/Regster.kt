@@ -11,6 +11,7 @@ interface Regster {
     fun loginUser(userEmail:String,UserPassword:String, result: (UiState<String>) -> Unit)
     fun forgotPassword(UserEmail: String, result: (UiState<String>) -> Unit)
     fun logout(result: () -> Unit)
+    fun regsterout(result: () -> Unit)
     fun storeSession(id: String, result: (CurrenUserStatis?) -> Unit)
     fun getSession(result: (CurrenUserStatis?) -> Unit)
 

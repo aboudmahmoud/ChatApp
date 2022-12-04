@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.utils.Screens
 import com.example.loginpage.R
 import com.example.loginpage.screens.login.LoginPageViewModel
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LogInPage(
     onNavgite: (String) -> Unit,
+    onNagivteGetUset:(String, String, CurrenUserStatis) -> Unit,
     loginViewModel: LoginPageViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
@@ -77,7 +79,7 @@ fun LogInPage(
     }
 
     ErrorMessegshow(loginViewModel=loginViewModel,ErrorInputAction=errorInputAction)
-    UiStateHandeler(loginViewModel,onNavgite)
+    UiStateHandeler(loginViewModel,onNagivteGetUset)
 }
 
 
@@ -85,11 +87,11 @@ private fun logInPorres(
     loginViewModel: LoginPageViewModel,
     scope: CoroutineScope
 ) {
-    if (Constans.checkUserLoginInfo(loginViewModel.useInfo)) {
+    if (Constans.checkUserLoginInfo(loginViewModel.userData.userInfo!!)) {
         setEmptyEmailError(loginViewModel)
     } else {
         loginViewModel.ErrorStatus = false
-        if (Constans.isValidEmail(loginViewModel.useInfo.UserEmail!!)) {
+        if (Constans.isValidEmail(loginViewModel.userData.userInfo!!.UserEmail!!)) {
             scope.launch {
                 loginViewModel.IntentChanenl.send(MainActionIntent.RegsttesUser) }
         } else {
@@ -127,7 +129,7 @@ fun ErrorMessegshow(loginViewModel: LoginPageViewModel , ErrorInputAction: (Bool
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String) -> Unit) {
+fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String, String, CurrenUserStatis) -> Unit) {
     val context = LocalContext.current
     when (val res = loginViewModel.LoginUserStatus.collectAsStateWithLifecycle().value) {
         is UiState.Loading -> {
@@ -144,7 +146,10 @@ fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String) -> 
             LaunchedEffect(key1 = true){
                 Toast.makeText(context, res.data, Toast.LENGTH_SHORT).show()
             }
-            onNavgite(Screens.HomePage.route)
+            loginViewModel.getSeesion {
+                onNavgite(Screens.HomePage.route, "CurrenUserStatis", loginViewModel.userData)
+            }
+
         }
         is UiState.Idel -> {}
     }

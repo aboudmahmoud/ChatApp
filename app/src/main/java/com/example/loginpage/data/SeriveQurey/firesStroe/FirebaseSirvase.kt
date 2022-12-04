@@ -1,5 +1,6 @@
 package com.example.loginpage.data.SeriveQurey.firesStroe
 
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.Moudle.User.UserInfo
 import com.example.loginpage.utils.helper.UiState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,15 +10,15 @@ class FirebaseSirvase(
  val fireStroe: FirebaseFirestore,
 
 ): SiravseFiucnation {
-    override fun GetUsetAllUser(result: (UiState<List<UserInfo>>) -> Unit) {
+    override fun GetUsetAllUser(result: (UiState<List<CurrenUserStatis>>) -> Unit) {
         fireStroe.collection("users")
             .get()
             .addOnSuccessListener {
-                val users = arrayListOf<UserInfo>()
+                val users = arrayListOf<CurrenUserStatis>()
                 for (document in it) {
                    // Log.d(TAG, "${document.id} => ${document.data}")
-                    val user = document.toObject(UserInfo::class.java)
-                    user.UserDucmentID=document.id
+                    val user = document.toObject(CurrenUserStatis::class.java)
+                    user.userInfo!!.UserDucmentID=document.id
                     users.add(user)
 
                 }

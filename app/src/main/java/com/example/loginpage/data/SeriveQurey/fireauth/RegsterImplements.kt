@@ -89,14 +89,29 @@ class RegsterImplements(
     }
 
     override fun loginUser(userEmail:String,UserPassword:String, result: (UiState<String>) -> Unit) {
+
         firesAuthe.signInWithEmailAndPassword(userEmail,UserPassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+
                     storeSession(id = task.result.user?.uid ?: ""){
                         if (it == null){
                             result.invoke(UiState.Failure("Failed to store local session"))
                         }else{
                             result.invoke(UiState.Success("Login successfully!"))
+                            it.crunntStatus=CurrentOnlieOff.Online
+                            updateUserInfo(it){
+                                state->
+                                when(state){
+                                    is UiState.Failure -> {
+
+                                    }
+                                    is UiState.Success -> {
+
+                                    }
+                                    else ->{}
+                                }
+                            }
                         }
                     }
                 }
@@ -120,7 +135,6 @@ class RegsterImplements(
     }
 
     override fun logout(result: () -> Unit) {
-
         getSession {
             if (it != null) {
                 it.crunntStatus = CurrentOnlieOff.OffLine
@@ -130,10 +144,7 @@ class RegsterImplements(
                             result.invoke()
                         }
                         is UiState.Success -> {
-                            firesAuthe.signOut()
-                            appPreferences.edit().putString(SharedPrefConstants.USER_SESSION, null)
-                                .apply()
-                            result.invoke()
+                            regsterout(result)
                         }
                         else -> {}
                     }
@@ -144,6 +155,13 @@ class RegsterImplements(
         //
 
 
+    }
+
+    override fun regsterout(result: () -> Unit) {
+        firesAuthe.signOut()
+        appPreferences.edit().putString(SharedPrefConstants.USER_SESSION, null)
+            .apply()
+        result.invoke()
     }
 
     override fun storeSession(id: String, result: (CurrenUserStatis?) -> Unit) {

@@ -31,8 +31,13 @@ class HomeViewModel  @Inject constructor(
     val dataUser = _getAllUseData.asStateFlow()
 
 
+    private  val _useInfo = MutableStateFlow<CurrenUserStatis?>(CurrenUserStatis())
+    val useInfo = _useInfo.asStateFlow()
+    var userData:CurrenUserStatis? by mutableStateOf(null)
+
     init {
         processIntent()
+        getStroedUser()
         getAlluser()
     }
 
@@ -63,6 +68,20 @@ class HomeViewModel  @Inject constructor(
             }
         }
 
+    }
+
+    private fun getStroedUser()
+    {
+        repsotry.getSession {
+            viewModelScope.launch {
+                if (it != null) {
+                    _useInfo.emit(it)
+                    userData=useInfo.value
+
+
+                }
+            }
+        }
     }
 }
 

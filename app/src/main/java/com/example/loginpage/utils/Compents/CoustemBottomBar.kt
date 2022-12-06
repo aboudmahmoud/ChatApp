@@ -10,13 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.loginpage.R
+import com.example.loginpage.screens.FollBoxScrie
+import com.example.loginpage.screens.home.helper.HomeIntnent
 import com.example.loginpage.ui.theme.NavBottomColor
 import com.example.loginpage.ui.theme.nare
+import com.example.loginpage.utils.MainViewModel
 import com.example.loginpage.utils.Screens
+import kotlinx.coroutines.launch
 
 //This is Natgation Bttom Bar
 @Composable
@@ -65,51 +70,69 @@ fun NavhandMadeIt(navController: NavHostController, modifier: Modifier = Modifie
 @Composable
 fun Navbody(
     navController: NavHostController,
-    color: Color, selected: Boolean, modifier: Modifier
+    color: Color, selected: Boolean, modifier: Modifier,
+mainViewModel: MainViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
+    var showProoges by remember {
+        mutableStateOf(
+            false
+        )
+    }
 
-    Box() {
-        Image(painter = painterResource(R.drawable.ic_tomage), contentDescription = "tomeg")
+    if(showProoges){
+        FollBoxScrie()
+    }else{
+        Box() {
+            Image(painter = painterResource(R.drawable.ic_tomage), contentDescription = "tomeg")
 
-        Row(modifier = modifier.align(alignment = Alignment.Center)) {
-            Box(
-                modifier = modifier.weight(1f), contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_icon_awesome_home),
-                    contentDescription = "home", modifier = Modifier.clickable {
+            Row(modifier = modifier.align(alignment = Alignment.Center)) {
+                Box(
+                    modifier = modifier.weight(1f), contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.logoutcanle),
+                        contentDescription = "home", modifier = Modifier.clickable {
+                            showProoges=true
+                            scope.launch {
+                                mainViewModel.IntentChanenl.send(HomeIntnent.logOut{
+                                    navController.popBackStack()
+                                    navController.navigate(Screens.Walcom.route)
+                                })
+                            }
 
-                        navController.navigate(Screens.Login.route)
-                    }
-                )
-            }
-            Box(
-                modifier = modifier.weight(1f), contentAlignment = Alignment.Center
-            ) {
-                Image(painter = painterResource(R.drawable.ic_icon_awesome_home),
-                    contentDescription = "home",
-                    modifier = modifier.clickable {
+                        }
+                    )
+                }
+                Box(
+                    modifier = modifier.weight(1f), contentAlignment = Alignment.Center
+                ) {
+                    Image(painter = painterResource(R.drawable.proflie),
+                        contentDescription = "home",
+                        modifier = modifier.clickable {
 //                        selected=false
-                        navController.navigate(Screens.HomePage.route)
-                    }
-                )
-            }
-            Box(
-                modifier = modifier
-                    .weight(1f), contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_icon_awesome_home),
-                    contentDescription = "emailIcon",
-                    tint = color, modifier = modifier.clickable(enabled = !selected) {
+                         //   navController.navigate(Screens.HomePage.route)
+                        }
+                    )
+                }
+                Box(
+                    modifier = modifier
+                        .weight(1f), contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_icon_awesome_home),
+                        contentDescription = "emailIcon",
+                        tint = color, modifier = modifier.clickable(enabled = !selected) {
 
-                        navController.navigate(Screens.HomePage.route)
+                            navController.navigate(Screens.HomePage.route)
 
-                    }
-                )
+                        }
+                    )
+                }
             }
         }
     }
+
 
 
 }

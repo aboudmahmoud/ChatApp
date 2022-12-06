@@ -190,8 +190,6 @@ fun RowScope.AddItem(
 
 @Composable
 fun FollBoxScrie() {
-
-
     Box(modifier = Modifier.fillMaxSize().background(color =Balke), contentAlignment = Alignment.Center) {
         CustomCircularProgressBar()
     }

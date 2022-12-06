@@ -13,7 +13,11 @@ object Constans {
     val RegsetPagesSize:Int=2
 
     fun checkUserLoginInfo(userInfo: UserInfo): Boolean {
-        return userInfo.UserEmail == null || userInfo.UserPassword == null }
+        return userInfo.UserEmail == null ||  userInfo.UserPassword == null || chechkEmpty(userInfo) }
+
+    private fun chechkEmpty(userInfo: UserInfo): Boolean {
+        return userInfo.UserEmail!!.isEmpty() ||  userInfo.UserPassword!!.isEmpty()
+    }
 
     fun checkUserMainInfo(userInfo: UserInfo): Boolean {
         return userInfo.UserName == null ||checkUserLoginInfo(userInfo) }

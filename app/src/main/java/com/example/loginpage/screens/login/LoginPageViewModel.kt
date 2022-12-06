@@ -35,7 +35,7 @@ class LoginPageViewModel @Inject constructor(
 
     init {
         processIntent()
-        _userData.userInfo= UserInfo()
+
     }
 
     //process

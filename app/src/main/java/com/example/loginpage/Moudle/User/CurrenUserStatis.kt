@@ -4,6 +4,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class CurrenUserStatis(
-    var userInfo: UserInfo?=null,
+    var userInfo: UserInfo?=UserInfo(),
     var crunntStatus: CurrentOnlieOff = CurrentOnlieOff.Online
 ):Parcelable

@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.loginpage.R
@@ -96,8 +97,14 @@ mainViewModel: MainViewModel = hiltViewModel()
                             showProoges=true
                             scope.launch {
                                 mainViewModel.IntentChanenl.send(HomeIntnent.logOut{
-                                    navController.popBackStack()
-                                    navController.navigate(Screens.Walcom.route)
+                                    navController.navigate(Screens.Walcom.route){
+                                        popUpTo( navController.graph.findStartDestination().id){
+                                            inclusive = true
+                                            saveState = true
+                                        }
+                                        launchSingleTop=true
+                                    }
+
                                 })
                             }
 

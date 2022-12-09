@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -53,11 +54,20 @@ fun LoginPageTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
+
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = if(darkTheme) BtnBackground else BtnBackground
+        )
+    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         val currentWindow = (view.context as? Activity)?.window ?: throw Exception("Not in an activity - unable to get Window reference")
         SideEffect {
-            currentWindow.statusBarColor = colorScheme.primary.toArgb()
+
             WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars =
                 darkTheme
 

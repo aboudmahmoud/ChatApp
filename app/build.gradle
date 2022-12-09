@@ -94,6 +94,10 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:0.24.2-alpha"
     // Splash API
     implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    //System Bars Colosrs
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.26.5-rc"
+
 }
 
 kapt {

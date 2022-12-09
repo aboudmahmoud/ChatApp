@@ -1,13 +1,16 @@
 package com.example.loginpage.screens
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.draggable
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.systemGestureExclusion
+
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ContentAlpha
+
 import androidx.compose.material3.*
 
 import androidx.compose.runtime.*
@@ -16,20 +19,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.rememberAsyncImagePainter
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.utils.Compents.BotomNagavationBar
 import com.example.loginpage.R
 
@@ -40,10 +49,14 @@ import com.example.loginpage.ui.theme.*
 fun TextUsebla(
     modifier: Modifier = Modifier,
     Hint: String,
+    fontFamily: FontFamily? = null,
+    textColor:Color=Textcolor,
     Enabled: Boolean = false,
     Action: () -> Unit = {}
 ) {
-    Text(text = Hint, style = TextStyle(color = Textcolor, fontSize = 12.sp),
+    Text(text = Hint, style = TextStyle(color = textColor, fontSize = 12.sp,
+    fontFamily =fontFamily
+    ),
         modifier = modifier.clickable(enabled = Enabled) {
             Action()
         })
@@ -190,7 +203,9 @@ fun RowScope.AddItem(
 
 @Composable
 fun FollBoxScrie() {
-    Box(modifier = Modifier.fillMaxSize().background(color =Balke), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Balke), contentAlignment = Alignment.Center) {
         CustomCircularProgressBar()
     }
 }
@@ -259,3 +274,70 @@ fun CoustemDiloage(dialogOpene:Boolean,
 }
 
 
+
+
+
+
+@Composable
+ fun ButtonTodo(ButtonText:String,ButtonAction:()->Unit) {
+    Button(onClick = ButtonAction, colors =  ButtonDefaults.buttonColors(
+        containerColor = Balke
+    )) {
+        TextUsebla(Hint = ButtonText, textColor = BtnBackground, fontFamily = IrishGrover)
+    }
+}
+
+@Composable
+fun UserDisplay(
+   ImageProfile:String,
+   UserName:String,
+   UserEmail:String
+
+) {
+    Box(
+        modifier = Modifier
+            .padding(10.dp)
+            .height(100.dp)
+    ) {
+        Row {
+            Spacer(
+                modifier = Modifier
+                    .width(10.dp)
+                    .height(20.dp)
+            )
+            Image(
+                painter = rememberAsyncImagePainter(ImageProfile),
+                contentDescription = "serch", modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(50.dp)
+                    .height(50.dp)
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+            Column {
+              InfoDatiels(InfoData=UserName,ImageIcon=R.drawable.prid, fontFamily = IrishGrover)
+
+
+                Spacer(modifier = Modifier.height(20.dp))
+                InfoDatiels(InfoData=UserEmail,ImageIcon=R.drawable.emicon, fontFamily = IstokWeb)
+
+            }
+        }
+    }
+}
+
+@Composable
+private fun InfoDatiels(InfoData: String,
+                        @DrawableRes ImageIcon:Int,
+                        fontFamily: FontFamily
+) {
+    Row(
+        verticalAlignment=Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = ImageIcon), contentDescription = "whaspImage",
+            tint = Color.Unspecified
+        )
+        Spacer(modifier = Modifier.width(5.dp))
+        TextUsebla(Hint = InfoData, textColor = BtnBackground,fontFamily=fontFamily)
+    }
+}

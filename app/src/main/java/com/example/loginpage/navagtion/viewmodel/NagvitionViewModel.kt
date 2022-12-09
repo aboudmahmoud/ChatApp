@@ -17,18 +17,12 @@ import javax.inject.Inject
 class NagvitionViewModel @Inject constructor(
     repsotry: RegsterImplements,
 ) : ViewModel() {
-     private  val _useInfo = MutableStateFlow<CurrenUserStatis?>(CurrenUserStatis())
-  val useInfo = _useInfo.asStateFlow()
-    var userData:CurrenUserStatis? by mutableStateOf(null)
     var StatredDistation: String by mutableStateOf(Screens.Walcom.route)
 
     init {
-
         repsotry.getSession {
             viewModelScope.launch {
                 if (it != null) {
-                    _useInfo.emit(it)
-                    userData=useInfo.value
                     StatredDistation = Screens.HomePage.route
 
                 }

@@ -1,0 +1,16 @@
+<vector android:autoMirrored="true" android:height="30dp"
+    android:viewportHeight="50" android:viewportWidth="50"
+    android:width="30dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#3300C6" android:pathData="M21.187,25.065C21.611,24.455 21.875,23.694 21.875,22.857C21.875,20.888 20.473,19.286 18.75,19.286C17.027,19.286 15.625,20.888 15.625,22.857C15.625,23.694 15.889,24.455 16.313,25.065C14.858,25.369 13.75,26.822 13.75,28.571V33.571H23.75V28.571C23.75,26.822 22.642,25.369 21.187,25.065ZM18.75,20.714C19.784,20.714 20.625,21.676 20.625,22.857C20.625,24.039 19.784,25 18.75,25C17.716,25 16.875,24.039 16.875,22.857C16.875,21.676 17.716,20.714 18.75,20.714ZM22.5,32.143H15V28.571C15,27.39 15.841,26.429 16.875,26.429H20.625C21.659,26.429 22.5,27.39 22.5,28.571V32.143Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M30,21.429H25.625V22.857H30V21.429Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M36.25,21.429H31.875V22.857H36.25V21.429Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M27.5,25H25.625V26.429H27.5V25Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M36.25,25H29.375V26.429H36.25V25Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M30.625,28.571H25.625V30H30.625V28.571Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M36.25,28.571H33.75V30H36.25V28.571Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M26.875,32.143H25.625V33.571H26.875V32.143Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M29.375,32.143H28.125V33.571H29.375V32.143Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M31.875,32.143H30.625V33.571H31.875V32.143Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M36.25,32.143H35V33.571H36.25V32.143Z"/>
+    <path android:fillColor="#3300C6" android:pathData="M27.5,10H22.5V14.286H10V40H40V14.286H27.5V10ZM23.75,11.429H26.25V14.286V17.143H23.75V14.286V11.429ZM38.75,15.714V38.571H11.25V15.714H22.5V18.571H27.5V15.714H38.75Z"/>
+</vector>

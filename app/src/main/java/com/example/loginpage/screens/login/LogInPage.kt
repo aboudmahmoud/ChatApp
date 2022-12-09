@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun LogInPage(
     onNavgite: (String) -> Unit,
-    onNagivteGetUset:(String, String, CurrenUserStatis) -> Unit,
     loginViewModel: LoginPageViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
@@ -79,7 +78,7 @@ fun LogInPage(
     }
 
     ErrorMessegshow(loginViewModel=loginViewModel,ErrorInputAction=errorInputAction)
-    UiStateHandeler(loginViewModel,onNagivteGetUset)
+    UiStateHandeler(loginViewModel,onNavgite)
 }
 
 
@@ -129,7 +128,7 @@ fun ErrorMessegshow(loginViewModel: LoginPageViewModel , ErrorInputAction: (Bool
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String, String, CurrenUserStatis) -> Unit) {
+fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String) -> Unit) {
     val context = LocalContext.current
     when (val res = loginViewModel.LoginUserStatus.collectAsStateWithLifecycle().value) {
         is UiState.Loading -> {
@@ -146,9 +145,7 @@ fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String, Str
             LaunchedEffect(key1 = true){
                 Toast.makeText(context, res.data, Toast.LENGTH_SHORT).show()
             }
-            loginViewModel.getSeesion {
-                onNavgite(Screens.HomePage.route, "CurrenUserStatis", loginViewModel.userData)
-            }
+            onNavgite(Screens.HomePage.route)
 
         }
         is UiState.Idel -> {}

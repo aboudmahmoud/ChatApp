@@ -4,9 +4,16 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import com.example.loginpage.R
 
-val fontAswome6=FontFamily(
+val fontAswome6 = FontFamily(
     Font(R.font.fab)
 )
-val fonBalooPaaji2=FontFamily(
+val fonBalooPaaji2 = FontFamily(
     Font(R.font.balpaj2)
+)
+val IrishGrover = FontFamily(
+    Font(R.font.rishgrover)
+)
+
+val IstokWeb = FontFamily(
+    Font(R.font.isotockweb)
 )

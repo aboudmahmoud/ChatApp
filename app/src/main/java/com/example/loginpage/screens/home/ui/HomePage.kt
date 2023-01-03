@@ -120,9 +120,7 @@ fun UserDisplay(
     ) {
         if (openDialog) {
             DialogBox2FA(onDismiss = doligeState,
-                ImageProfile = currentUser.userInfo!!.UserImage!!,
-            UserName = currentUser.userInfo!!.UserName!!,
-                UserEmail =  currentUser.userInfo!!.UserEmail!!,
+                usrInfo=currentUser.userInfo!!,
                 presnolPrfoile = false
                 )
         }

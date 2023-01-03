@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -50,11 +51,12 @@ fun TextUsebla(
     modifier: Modifier = Modifier,
     Hint: String,
     fontFamily: FontFamily? = null,
+    fontSize: TextUnit =12.sp,
     textColor:Color=Textcolor,
     Enabled: Boolean = false,
     Action: () -> Unit = {}
 ) {
-    Text(text = Hint, style = TextStyle(color = textColor, fontSize = 12.sp,
+    Text(text = Hint, style = TextStyle(color = textColor, fontSize = fontSize,
     fontFamily =fontFamily
     ),
         modifier = modifier.clickable(enabled = Enabled) {
@@ -65,10 +67,19 @@ fun TextUsebla(
 @Composable
 fun BtnToUse(
     textBtn: String,
+
     onClick: () -> Unit,
     ) {
+
     Button(
-        onClick = onClick,
+        onClick = {onClick()}, contentPadding = PaddingValues(
+            start = 20.dp,
+            top = 12.dp,
+            end = 20.dp,
+            bottom = 12.dp
+        ),
+        enabled = true,
+
         colors = ButtonDefaults.buttonColors(containerColor = BtnBackground),
         modifier = Modifier.width(280.dp)
     ) {
@@ -279,11 +290,16 @@ fun CoustemDiloage(dialogOpene:Boolean,
 
 
 @Composable
- fun ButtonTodo(ButtonText:String,ButtonAction:()->Unit) {
-    Button(onClick = ButtonAction, colors =  ButtonDefaults.buttonColors(
+ fun ButtonTodo(ButtonText:String,fontSize: TextUnit =12.sp,ButtonAction:()->Unit) {
+    Button(onClick = ButtonAction, contentPadding = PaddingValues(
+        start = 20.dp,
+        top = 12.dp,
+        end = 20.dp,
+        bottom = 12.dp
+    ), colors =  ButtonDefaults.buttonColors(
         containerColor = Balke
     )) {
-        TextUsebla(Hint = ButtonText, textColor = BtnBackground, fontFamily = IrishGrover)
+        TextUsebla(Hint = ButtonText,fontSize=fontSize, textColor = BtnBackground, fontFamily = IrishGrover)
     }
 }
 
@@ -341,3 +357,6 @@ private fun InfoDatiels(InfoData: String,
         TextUsebla(Hint = InfoData, textColor = BtnBackground,fontFamily=fontFamily)
     }
 }
+
+
+

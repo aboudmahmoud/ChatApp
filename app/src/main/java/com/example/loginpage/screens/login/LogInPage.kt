@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 @Composable
 fun LogInPage(
+    onNaviteWithOutBobUp: (String) -> Unit,
     onNavgite: (String) -> Unit,
     loginViewModel: LoginPageViewModel = hiltViewModel()
 ) {
@@ -71,7 +72,7 @@ fun LogInPage(
             Row() {
                 TextUsebla(Hint="You don't have an account?")
                 TextUsebla(Hint="sign up", Enabled = true, Action={
-                    onNavgite(Screens.Regster.route)
+                    onNaviteWithOutBobUp(Screens.Regster.route)
                 } )
             }
         }

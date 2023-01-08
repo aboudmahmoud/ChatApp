@@ -4,7 +4,10 @@ import android.content.SharedPreferences
 import com.example.loginpage.data.SeriveQurey.fireauth.RegsterImplements
 import com.example.loginpage.data.SeriveQurey.firesStroe.FirebaseSirvase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -19,8 +22,10 @@ object RespostoryMoudle {
     @Singleton
     fun provideFirebaseSirvase(
         firebaseFirestore: FirebaseFirestore,
+       storageReference: StorageReference,
+        RealTimeDate: DatabaseReference
         ): FirebaseSirvase {
-        return FirebaseSirvase(firebaseFirestore)
+        return FirebaseSirvase(firebaseFirestore,storageReference,RealTimeDate)
     }
 
     @Provides

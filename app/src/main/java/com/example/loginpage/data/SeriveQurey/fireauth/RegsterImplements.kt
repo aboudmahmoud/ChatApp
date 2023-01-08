@@ -41,9 +41,7 @@ class RegsterImplements(
                             is UiState.Failure -> {
                                 result.invoke(UiState.Failure(state.error))
                             }
-                        else->{
-
-                        }
+                        else->{}
                         }
                     }
                 }else{
@@ -74,6 +72,7 @@ class RegsterImplements(
         document
             .set(user)
             .addOnSuccessListener {
+
                 result.invoke(
                     UiState.Success("User has been update successfully")
                 )
@@ -98,18 +97,20 @@ class RegsterImplements(
                         if (it == null){
                             result.invoke(UiState.Failure("Failed to store local session"))
                         }else{
-                            result.invoke(UiState.Success("Login successfully!"))
+
                             it.crunntStatus=CurrentOnlieOff.Online
                             updateUserInfo(it){
                                 state->
                                 when(state){
                                     is UiState.Failure -> {
-
+                                        result.invoke(UiState.Success("Login successfully! but not online"))
                                     }
                                     is UiState.Success -> {
+                                        result.invoke(UiState.Success("Login successfully!"))
+                                    }
+                                    else ->{
 
                                     }
-                                    else ->{}
                                 }
                             }
                         }
@@ -159,8 +160,7 @@ class RegsterImplements(
 
     override fun regsterout(result: () -> Unit) {
         firesAuthe.signOut()
-        appPreferences.edit().putString(SharedPrefConstants.USER_SESSION, null)
-            .apply()
+        appPreferences.edit().clear().apply()
         result.invoke()
     }
 

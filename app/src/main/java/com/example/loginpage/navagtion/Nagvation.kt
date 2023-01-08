@@ -35,12 +35,7 @@ navagtionViewModle: NagvitionViewModel = hiltViewModel()
     val nagivate = remember<(String) -> Unit> {
         {
             navController.navigate(it){
-                popUpTo( navController.graph.findStartDestination().id){
-
-                    inclusive = true
-                    saveState = true
-                }
-                launchSingleTop=true
+                popUpTo(0)
 
             }
 
@@ -56,7 +51,7 @@ navagtionViewModle: NagvitionViewModel = hiltViewModel()
         }
 
         composable(Screens.Login.route) {
-            LogInPage(onNavgite = nagivate)
+            LogInPage(onNaviteWithOutBobUp = nagivateWithoutBopup, onNavgite = nagivate)
 
         }
         composable(Screens.HomePage.route) {

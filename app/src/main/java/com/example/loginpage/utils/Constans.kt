@@ -6,6 +6,7 @@ import com.example.loginpage.Moudle.User.UserInfo
 import java.util.regex.Matcher
 
 import java.util.regex.Pattern
+import kotlin.random.Random
 
 object Constans {
     val RegsterPage1Posation:Int=0
@@ -41,11 +42,22 @@ object Constans {
         }
         return false
     }
-
+    fun pair(): Pair<Long, Int> {
+        val randomLong = Random.nextLong()
+        val min = 1
+        val max = 1000
+        val randomInt = Random.nextInt(min, max + 1)
+        return Pair(randomLong, randomInt)
+    }
 
 }
 
 object SharedPrefConstants {
     val LOCAL_SHARED_PREF = "local_shared_pref"
     val USER_SESSION = "user_session"
+}
+
+object FirebaseStorageConstants {
+    val ROOT_DIRECTORY = "app"
+    val Profile_Image = "image"
 }

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.loginpage.Moudle.User.UserInfo
@@ -55,7 +55,7 @@ fun DilogForCoustemEditUser(
         EditProfile(editViewModel)
     }
 }
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
 fun EditProfile(editViewModel: EditViewModel) {
    val userInfoData by remember {

@@ -27,6 +27,8 @@ import javax.inject.Inject
     private  val _useInfo = MutableStateFlow<CurrenUserStatis?>(CurrenUserStatis())
     val useInfo = _useInfo.asStateFlow()
     var userData: CurrenUserStatis? by mutableStateOf(null)
+
+    var SenderData: CurrenUserStatis? by mutableStateOf(null)
     init {
         processIntent()
         getStroedUser()
@@ -52,20 +54,23 @@ import javax.inject.Inject
                 if (it != null) {
                     _useInfo.emit(it)
                     userData=useInfo.value
-
+                    DataUser.SetDataForLocalUser(userData!!)
 
                 }
             }
         }
     }
+
      fun EventLogOut(result: () -> Unit){
          viewModelScope.launch {
              IntentChanenl.send(HomeIntnent.logOut {
                  result.invoke()
              })
+
          }
     }
     private fun signOut(result: () -> Unit) {
         repsotry.logout(result)
+        onCleared()
     }
 }

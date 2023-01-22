@@ -3,7 +3,7 @@ package com.example.loginpage.Moudle.ChatRoom
 
 
 data class MessegDiteals(
-    val Messeg:String,
-    val MessageRevsersUserID:String,
-    val MeesageSenderUserID:String,
-    val date:String)
+    val messeg:String="",
+    val messageRevsersUserID:String="",
+    val meesageSenderUserID:String="",
+    val date:String="")

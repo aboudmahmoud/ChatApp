@@ -14,7 +14,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.loginpage.Moudle.User.CurrenUserStatis
+import com.example.loginpage.Moudle.User.UserInfo
 import com.example.loginpage.navagtion.viewmodel.NagvitionViewModel
+import com.example.loginpage.screens.chatPage.ChatUI
 import com.example.loginpage.screens.regseterpage.ResgsterPageCompineantion
 import com.example.loginpage.screens.walcome.WalcomePage
 import com.example.loginpage.utils.Screens
@@ -43,6 +45,18 @@ navagtionViewModle: NagvitionViewModel = hiltViewModel()
         }
     }
 
+    val ngiaateWithData= remember<(Any,String,String)-> Unit> {
+        {
+            UsereData,Key,Path  ->
+
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                key=Key,
+                value = UsereData
+            )
+            //we Can't Pop up or we lost data
+            navController.navigate(Path)
+        }
+    }
 
 
     NavHost(navController = navController, startDestination =navagtionViewModle.StatredDistation ) {
@@ -56,10 +70,13 @@ navagtionViewModle: NagvitionViewModel = hiltViewModel()
         }
         composable(Screens.HomePage.route) {
 
-         HomePage(onNavgite = nagivate)
+         HomePage(onNavgite = nagivateWithoutBopup)
         }
         composable(Screens.Walcom.route) {
             WalcomePage( onNavgite=nagivateWithoutBopup)
+        }
+        composable(Screens.Chat.route) {
+            ChatUI()
         }
     }
 }

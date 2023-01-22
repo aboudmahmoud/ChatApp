@@ -25,7 +25,7 @@ class HomeViewModel  @Inject constructor(
     private val repsotry: RegsterImplements,
     private val repsost: FirebaseSirvase,
 ) : ViewModel() {
-    val IntentChanenl = Channel<HomeIntnent> { Channel.UNLIMITED }
+    private val IntentChanenl = Channel<HomeIntnent> { Channel.UNLIMITED }
 
     private val _getAllUseData = MutableStateFlow<UiState<List<CurrenUserStatis>>>(UiState.Idel)
     val dataUser = _getAllUseData.asStateFlow()
@@ -55,6 +55,11 @@ class HomeViewModel  @Inject constructor(
         }
     }
 
+    fun IntentSignOut(result: () -> Unit){
+        viewModelScope.launch {
+             IntentChanenl.send(HomeIntnent.logOut(result))
+        }
+    }
 
     private fun signOut(result: () -> Unit) {
 

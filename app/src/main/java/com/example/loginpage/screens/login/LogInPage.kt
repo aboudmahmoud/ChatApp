@@ -12,11 +12,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.loginpage.Moudle.User.CurrenUserStatis
-import com.example.loginpage.utils.Screens
 import com.example.loginpage.R
+import com.example.loginpage.utils.Screens
+
 import com.example.loginpage.screens.login.LoginPageViewModel
 import com.example.loginpage.utils.MainActionIntent
 import com.example.loginpage.ui.theme.Textcolor
@@ -92,8 +93,7 @@ private fun logInPorres(
     } else {
         loginViewModel.ErrorStatus = false
         if (Constans.isValidEmail(loginViewModel.userData.userInfo!!.UserEmail!!)) {
-            scope.launch {
-                loginViewModel.IntentChanenl.send(MainActionIntent.RegsttesUser) }
+            loginViewModel.IntentLogIn()
         } else {
             setEmailValidteerorError(loginViewModel)
 
@@ -127,7 +127,7 @@ fun ErrorMessegshow(loginViewModel: LoginPageViewModel , ErrorInputAction: (Bool
     }
 }
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
 fun UiStateHandeler( loginViewModel: LoginPageViewModel, onNavgite: (String) -> Unit) {
     val context = LocalContext.current

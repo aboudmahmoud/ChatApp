@@ -1,6 +1,9 @@
 package com.example.loginpage.di.appMoudle
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.loginpage.utils.MainViewModel
 import com.example.loginpage.utils.SharedPrefConstants
 
 import com.google.gson.Gson
@@ -29,5 +32,11 @@ object AppMoudle {
         return Gson()
     }
 
+   /* @Composable
+    @Provides
+    fun mainViewModel(): MainViewModel {
+        val mv:MainViewModel   = hiltViewModel()
+        return mv
+    }*/
 
 }

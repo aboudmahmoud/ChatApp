@@ -23,7 +23,7 @@ import javax.inject.Inject
 class LoginPageViewModel @Inject constructor(
     private val repsotry: RegsterImplements,
 ) : ViewModel() {
-    val IntentChanenl = Channel<MainActionIntent> { Channel.UNLIMITED }
+  private  val IntentChanenl = Channel<MainActionIntent> { Channel.UNLIMITED }
     private val _LoginUser = MutableStateFlow<UiState<String>>(UiState.Idel)
     val LoginUserStatus = _LoginUser.asStateFlow()
     var ErrorStatus by mutableStateOf(false)
@@ -49,6 +49,13 @@ class LoginPageViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun IntentLogIn(){
+        viewModelScope.launch {
+            IntentChanenl.send(MainActionIntent.RegsttesUser)
+        }
+
     }
 
     private fun loginInUser() {

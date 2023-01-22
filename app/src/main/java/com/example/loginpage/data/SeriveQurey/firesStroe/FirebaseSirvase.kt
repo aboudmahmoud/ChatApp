@@ -2,13 +2,15 @@ package com.example.loginpage.data.SeriveQurey.firesStroe
 
 import android.net.Uri
 import android.util.Log
+import com.example.loginpage.Moudle.ChatRoom.MessegDiteals
+import com.example.loginpage.Moudle.ChatRoom.UseCase.MessegSendState
+import com.example.loginpage.Moudle.ChatRoom.UseCase.UpdateStatChatState
 import com.example.loginpage.Moudle.User.CurrenUserStatis
-import com.example.loginpage.Moudle.User.UserInfo
 import com.example.loginpage.utils.helper.UiState
 import com.example.loginpage.utils.helper.UploadState
 import com.google.firebase.FirebaseException
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.StorageReference
 
@@ -22,6 +24,7 @@ class FirebaseSirvase(
  val storageReference: StorageReference,
 val RealTimeDate: DatabaseReference
 ): SiravseFiucnation {
+
     override fun GetUsetAllUser(result: (UiState<List<CurrenUserStatis>>) -> Unit) {
         fireStroe.collection("users")
             .get()
@@ -44,6 +47,66 @@ val RealTimeDate: DatabaseReference
                     )
                 )
             }
+    }
+
+    override fun onChangeUpateMeease(res: (UpdateStatChatState<MessegDiteals>) -> Unit) {
+        RealTimeDate.addValueEventListener(object: ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val messesgs= arrayListOf<MessegDiteals>()
+                if(snapshot.exists()){
+                    var msg=MessegDiteals()
+                    snapshot.children.forEach{
+                         msg=it.getValue(MessegDiteals::class.java)!!
+                    }
+                    res.invoke(
+                        UpdateStatChatState.Success(data = msg)
+                    )
+                }else{
+                    res.invoke(UpdateStatChatState.Idel)
+                }
+
+                //Log.d(TAG, "Value is: " + value)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //Log.w(TAG, "Failed to read value.", error.toException())
+                res.invoke(
+                    UpdateStatChatState.Falier(Errors=error.message)
+                )
+            }
+
+        })
+    }
+
+
+    override fun getRealTimeMessages(result: (UiState<List<MessegDiteals>>) -> Unit) {
+        val messesgs= arrayListOf<MessegDiteals>()
+        RealTimeDate.get().addOnSuccessListener {
+
+            for (messeg in it.children)
+            {
+                val msg=messeg.getValue(MessegDiteals::class.java)
+                messesgs.add(msg!!)
+            }
+            result.invoke(
+                UiState.Success(messesgs)
+            )
+        }.addOnFailureListener{
+            result.invoke(UiState.Failure(it.localizedMessage))
+        }
+    }
+
+    override fun SendRealTimeMessages(Message: MessegDiteals, res: (MessegSendState) -> Unit) {
+        RealTimeDate.push().setValue(Message).addOnSuccessListener {
+            res.invoke(
+                MessegSendState.Success
+            )
+        }.addOnFailureListener{
+            res.invoke(MessegSendState.Falier(Errors = it.localizedMessage))
+        }
     }
 
 

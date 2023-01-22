@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -114,6 +115,12 @@ private fun ContentNavbottom(
     color: Color,
     selected: Boolean
 ) {
+    val nagivate = remember<(String) -> Unit> {
+        {
+            navController.navigate(it)
+
+
+        }}
     var openDialog by remember {
         mutableStateOf(false) // Initially dialog is closed
     }
@@ -121,7 +128,8 @@ private fun ContentNavbottom(
     if (openDialog) {
         DialogBox2FA(
             onDismiss = doligeState,
-            presnolPrfoile = true
+            presnolPrfoile = true,
+                    onNavgite=nagivate
         )
     }
     Box() {
@@ -191,6 +199,7 @@ private fun LogOutNav(
             contentDescription = "home", modifier = Modifier.clickable {
                 showProoges()
                 mainViewModel.EventLogOut {
+                    
                     navController.navigate(Screens.Walcom.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             inclusive = true
@@ -198,6 +207,7 @@ private fun LogOutNav(
                         }
                         launchSingleTop = true
                     }
+
                 }
 
 

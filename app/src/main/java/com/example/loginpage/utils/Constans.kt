@@ -1,10 +1,11 @@
 package com.example.loginpage.utils
 
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.dp
+import android.annotation.SuppressLint
+import com.example.loginpage.Moudle.User.CurrenUserStatis
 import com.example.loginpage.Moudle.User.UserInfo
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Matcher
-
 import java.util.regex.Pattern
 import kotlin.random.Random
 
@@ -20,6 +21,13 @@ object Constans {
         return userInfo.UserEmail!!.isEmpty() ||  userInfo.UserPassword!!.isEmpty()
     }
 
+    @SuppressLint("SuspiciousIndentation")
+    fun getData():String{
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+        val date = Date()
+     val dates=   dateFormat.format(date)
+        return dates
+    }
     fun checkUserMainInfo(userInfo: UserInfo): Boolean {
         return userInfo.UserName == null ||checkUserLoginInfo(userInfo) }
 
@@ -61,3 +69,19 @@ object FirebaseStorageConstants {
     val ROOT_DIRECTORY = "app"
     val Profile_Image = "image"
 }
+
+object DataUser{
+    private lateinit var _SenderData: CurrenUserStatis
+    private lateinit var _LocalUserData: CurrenUserStatis
+    val SenderData get()= _SenderData
+    val ReciverData get() = _LocalUserData
+    fun SetDataForSender(SenderDate:CurrenUserStatis){
+        _SenderData=SenderDate
+    }
+    fun SetDataForLocalUser(LocalUserDate:CurrenUserStatis){
+        _LocalUserData=LocalUserDate
+    }
+}
+
+
+

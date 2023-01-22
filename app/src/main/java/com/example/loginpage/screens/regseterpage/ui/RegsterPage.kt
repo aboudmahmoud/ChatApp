@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 
@@ -155,7 +154,7 @@ fun ErrorMessegshow(regsterViewModel: RegsterViewModel, ErrorInputAction: (Boole
     }
 }
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
 fun UiStateHandeler(regsterViewModel: RegsterViewModel, onNavgite: (String) -> Unit) {
     val context = LocalContext.current

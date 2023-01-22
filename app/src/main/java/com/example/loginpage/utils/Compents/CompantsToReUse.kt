@@ -304,7 +304,7 @@ fun CoustemDiloage(dialogOpene:Boolean,
 }
 
 @Composable
-fun UserDisplay(
+fun UsersDisplay(
    ImageProfile:String,
    UserName:String,
    UserEmail:String
@@ -342,17 +342,20 @@ fun UserDisplay(
 }
 
 @Composable
-private fun InfoDatiels(InfoData: String,
-                        @DrawableRes ImageIcon:Int,
-                        fontFamily: FontFamily
+ fun InfoDatiels(InfoData: String,
+                        @DrawableRes ImageIcon:Int?=null,
+                        fontFamily: FontFamily?=null
 ) {
     Row(
         verticalAlignment=Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = ImageIcon), contentDescription = "whaspImage",
-            tint = Color.Unspecified
-        )
+        if(ImageIcon!=null){
+            Icon(
+                painter = painterResource(id = ImageIcon), contentDescription = "whaspImage",
+                tint = Color.Unspecified
+            )
+        }
+
         Spacer(modifier = Modifier.width(5.dp))
         TextUsebla(Hint = InfoData, textColor = BtnBackground,fontFamily=fontFamily)
     }

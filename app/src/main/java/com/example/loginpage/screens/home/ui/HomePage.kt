@@ -14,41 +14,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.loginpage.Moudle.User.CurrenUserStatis
 
 import com.example.loginpage.R
-import com.example.loginpage.screens.home.helper.HomeIntnent
 import com.example.loginpage.screens.home.viewmodel.HomeViewModel
 import com.example.loginpage.screens.profile.DialogBox2FA
 import com.example.loginpage.utils.Screens
 import com.example.loginpage.utils.helper.UiState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomePage(
     onNavgite: (String) -> Unit,
-homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Header(scope, homeViewModel, onNavgite)
+      //  Header(homeViewModel, onNavgite)
         Spacer(modifier = Modifier.padding(10.dp))
-        GetUserData(homeViewModel=homeViewModel)
+        GetUserData(homeViewModel = homeViewModel,onNavgite=onNavgite)
     }
 }
 
 @Composable
 private fun Header(
-    scope: CoroutineScope,
+
     homeViewModel: HomeViewModel,
     onNavgite: (String) -> Unit
 ) {
@@ -57,13 +54,9 @@ private fun Header(
         Row(modifier = Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
             Image(painter = painterResource(R.drawable.ic_lines), contentDescription = "lines",
                 modifier = Modifier.clickable {
-                    scope.launch {
-                        homeViewModel.IntentChanenl.send(HomeIntnent.logOut {
 
-                            onNavgite(Screens.Walcom.route)
+                    homeViewModel.IntentSignOut(result = { onNavgite(Screens.Walcom.route) })
 
-                        })
-                    }
                 })
 
             Image(
@@ -74,55 +67,69 @@ private fun Header(
     }
 }
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
-fun GetUserData( homeViewModel: HomeViewModel ) {
-when(val res=homeViewModel.dataUser.collectAsStateWithLifecycle().value){
-    is UiState.Failure -> {
-        CoustemDiloage(
-            dialogOpene = true,
-            HeadlineMessage = "Failure",
-            MainMessage = res.error!!
-        )
+fun GetUserData(homeViewModel: HomeViewModel, onNavgite: (String) -> Unit,) {
+    when (val res = homeViewModel.dataUser.collectAsStateWithLifecycle().value) {
+        is UiState.Failure -> {
+            CoustemDiloage(
+                dialogOpene = true,
+                HeadlineMessage = "Failure",
+                MainMessage = res.error!!
+            )
+        }
+
+        is UiState.Success -> {
+
+            ListOfUsers(res.data, homeViewModel.userData?.userInfo?.UserID!!,onNavgite=onNavgite)
+        }
+        //else don nothing
+        else -> {}
     }
-    UiState.Idel -> {}
-    UiState.Loading -> {}
-    is UiState.Success -> {
 
-        LazyColumn(modifier = Modifier.fillMaxWidth()){
-            itemsIndexed(res.data){ index, item ->
-                if(!item.userInfo!!.UserID.equals(homeViewModel.userData?.userInfo?.UserID)){
+}
 
-                    UserDisplay(item)
-                }
+@Composable
+private fun ListOfUsers(
+    res: List<CurrenUserStatis>,
+    UserID: String,
+    onNavgite: (String) -> Unit,
+) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        itemsIndexed(res) { index, item ->
+            if (!item.userInfo!!.UserID.equals(UserID)) {
+                UsersDisplay(currentUser=item,onNavgite=onNavgite)
             }
         }
-}}
-
+    }
 }
 
 
 @Composable
-fun UserDisplay(
+fun UsersDisplay(
     currentUser: CurrenUserStatis,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavgite: (String) -> Unit,
 ) {
     var openDialog by remember {
         mutableStateOf(false) // Initially dialog is closed
     }
-    val doligeState = remember { { openDialog = false }}
+    val doligeState = remember { { openDialog = false } }
     Box(
-        modifier = modifier.clickable {
-            openDialog = true
-        }
+        modifier = modifier
+            .clickable {
+                openDialog = true
+            }
             .padding(10.dp)
             .height(100.dp)
     ) {
         if (openDialog) {
-            DialogBox2FA(onDismiss = doligeState,
-                usrInfo=currentUser.userInfo!!,
-                presnolPrfoile = false
-                )
+            DialogBox2FA(
+                onDismiss = doligeState,
+                usrInfo = currentUser.userInfo!!,
+                presnolPrfoile = false,
+                onNavgite=onNavgite
+            )
         }
         Row {
             Spacer(
@@ -139,9 +146,9 @@ fun UserDisplay(
             )
             Spacer(modifier = modifier.width(20.dp))
             Column {
-                TextUsebla(Hint=currentUser.userInfo!!.UserName!!)
+                TextUsebla(Hint = currentUser.userInfo!!.UserName!!)
                 Spacer(modifier = modifier.height(20.dp))
-                TextUsebla(Hint=currentUser.crunntStatus.status)
+                TextUsebla(Hint = currentUser.crunntStatus.status)
             }
         }
     }

@@ -54,7 +54,7 @@ import javax.inject.Inject
                 if (it != null) {
                     _useInfo.emit(it)
                     userData=useInfo.value
-                    DataUser.SetDataForLocalUser(userData!!)
+                    //DataUser.SetDataForLocalUser(userData!!)
 
                 }
             }

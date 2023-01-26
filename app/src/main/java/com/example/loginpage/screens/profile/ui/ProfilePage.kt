@@ -89,9 +89,11 @@ fun ProfilePage(
                 ButtonTodo(ButtonText = "Chat",fontSize = 18.sp,) {
                     onDismiss()
                     DataUser.SetDataForSender(CurrenUserStatis(
-                        userInfo=usrInfo,
+                        userInfo= profileViewModel.userData?.userInfo,
 
                     ))
+
+                    DataUser.SetDataForReciver(CurrenUserStatis(usrInfo))
                     onNavgite(Screens.Chat.route)
 
                 }

@@ -47,7 +47,7 @@ import com.example.loginpage.utils.DataUser
 import com.example.loginpage.utils.helper.UiState
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+
 fun ChatUI(
 
     chatViewModel: ChatViewModel = hiltViewModel()
@@ -57,6 +57,233 @@ fun ChatUI(
     var messeagese: List<MessegDiteals>? by remember {
         mutableStateOf(listOf())
     }
+    StateFotGettingAllMessages(chatViewModel){
+        AllMessages->
+    /*    for(mssg in AllMessages!!){
+            if(mssg.meesageSenderUserID.contains(chatViewModel.ResverData!!.userInfo!!.UserID)){
+
+            }
+        }*/
+        messeagese=AllMessages!!.filter { mssg ->
+            check(mssg, chatViewModel)
+        }
+    }
+
+   StateForNewRealtimeMessages(chatViewModel){
+       NewMessages->
+      if( check(NewMessages,chatViewModel)) messeagese = messeagese?.plus(NewMessages)
+   }
+    Column() {
+        ChatListUI(modifier = Modifier.weight(6f) ,messeagese = messeagese ,chatViewModel=chatViewModel)
+        SendingMessagBar(modifier = Modifier.weight(1f),chatViewModel=chatViewModel)
+
+    }
+}
+
+
+private fun check(
+    mssg: MessegDiteals,
+    chatViewModel: ChatViewModel
+) = mssg.meesageSenderUserID.contains(chatViewModel.ResverData!!.userInfo!!.UserID!!) ||
+        mssg.meesageSenderUserID.contains(chatViewModel.SenderuseuserData!!.userInfo!!.UserID!!) ||
+        mssg.messageRevsersUserID.contains(chatViewModel.ResverData!!.userInfo!!.UserID!!) ||
+        mssg.messageRevsersUserID.contains(chatViewModel.SenderuseuserData!!.userInfo!!.UserID!!)
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun ColumnScope.SendingMessagBar(modifier:Modifier,chatViewModel:ChatViewModel) {
+    Row(
+        modifier = modifier
+    ) {
+        var text by remember {
+            mutableStateOf(
+                ""
+            )
+        }
+        SendingMessageState(chatViewModel){
+            text=" "
+        }
+        val ChatSendIntent = remember {
+            {
+                chatViewModel.IntentSendMeesage(
+                    MessegDiteals(
+                        messeg = text,
+                        messageRevsersUserID = chatViewModel.ResverData!!.userInfo!!.UserID!!,
+                        meesageSenderUserID = chatViewModel.SenderuseuserData!!.userInfo!!.UserID!!,
+                        date = getData()
+                    )
+                )
+            }
+        }
+        TextField(
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Black,
+                disabledTextColor = Color.Transparent,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(40.dp),
+            value = text,
+            onValueChange = {
+                text = it
+            },
+
+            )
+        IconButton(onClick = { ChatSendIntent() }
+
+
+        ) {
+            Icon(
+                imageVector = Icons.Default.Send,
+                tint = Color.Green,
+                contentDescription = "Send"
+            )
+        }
+
+    }
+}
+@Composable
+private fun SendingMessageState(
+    chatViewModel: ChatViewModel,
+    action:()->Unit
+) {
+
+    when (val rest = chatViewModel.SendMessageState.collectAsStateWithLifecycle().value) {
+        is MessegSendState.Falier -> {
+            CoustemDiloage(
+                dialogOpene = true,
+                HeadlineMessage = "Failure",
+                MainMessage = rest.Errors!!
+            )
+        }
+        MessegSendState.Idel -> {
+
+        }
+        MessegSendState.Success -> {
+            action()
+            chatViewModel.setDoneMeesage()
+        }
+    }
+}
+
+@Composable
+fun ColumnScope.ChatListUI(modifier:Modifier,messeagese:List<MessegDiteals>?,chatViewModel:ChatViewModel) {
+    LazyColumn(modifier = modifier) {
+        if (messeagese != null) {
+            itemsIndexed(messeagese!!) { index, item ->
+                val IsHeSender =
+                    item.meesageSenderUserID == chatViewModel.ResverData!!.userInfo?.UserID
+                Box(
+                    contentAlignment = if (IsHeSender) {
+                        Alignment.CenterEnd
+                    } else {
+                        Alignment.CenterStart
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .width(200.dp)
+                            .drawBehind {
+                                val cornerRadius = 10.dp.toPx()
+                                val triangleHieght = 20.dp.toPx()
+                                val triangelWidth = 25.dp.toPx()
+                                val trianglePath = Path().apply {
+                                    if (IsHeSender) {
+                                        moveTo(size.width, size.height - cornerRadius)
+                                        lineTo(size.width, size.height + triangleHieght)
+                                        lineTo(
+                                            size.width - triangelWidth,
+                                            size.height - cornerRadius
+                                        )
+                                        close()
+                                    } else {
+                                        moveTo(0f, size.height - cornerRadius)
+                                        lineTo(0f, size.height + triangleHieght)
+                                        lineTo(triangelWidth, size.height - cornerRadius)
+                                        close()
+                                    }
+                                }
+                                drawPath(
+                                    path = trianglePath,
+                                    color = if (IsHeSender) Color.Black else Color.Gray
+                                )
+                            }
+                            .background(
+                                color = if (IsHeSender) Color.Black else Color.Gray,
+                                shape = RoundedCornerShape(10.dp)
+
+                            )
+                            .padding(8.dp)
+
+                    ) {
+                        Text(
+                            text = item.meesageSenderUserID,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = item.date,
+                            color = Color.White
+                        )
+                        Text(
+                            text = item.messeg,
+                            color = Color.White,
+                            modifier = Modifier.align(Alignment.End)
+                        )
+                    }
+
+
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+
+
+    }
+}
+
+@Composable
+private fun StateForNewRealtimeMessages(
+    chatViewModel: ChatViewModel,
+
+    action:(MessegDiteals)->Unit
+) {
+
+    when (val res = chatViewModel.newMessaes.collectAsStateWithLifecycle().value) {
+        is UpdateStatChatState.Falier -> {
+            CoustemDiloage(
+                dialogOpene = true,
+                HeadlineMessage = "Failure",
+                MainMessage = res.Errors!!
+            )
+        }
+        is UpdateStatChatState.Idel -> {
+
+        }
+        is UpdateStatChatState.Success -> {
+            if (res.data.messeg.isNotEmpty()) {
+               /* messeageses = messeageses?.plus(res.data)*/
+                action(res.data)
+            }
+
+
+            //Log.d("Aboud", messeagese!![messeagese!!.size-2].messeg!!)
+            chatViewModel.setIdelForNewMassege()
+
+        }
+    }
+
+}
+
+@Composable
+private fun StateFotGettingAllMessages(
+    chatViewModel: ChatViewModel,
+action:(List<MessegDiteals>?)->Unit
+){
+
     when (val res = chatViewModel.getMessges.collectAsStateWithLifecycle().value) {
         is UiState.Failure -> {
             CoustemDiloage(
@@ -72,171 +299,11 @@ fun ChatUI(
             FollBoxScrie()
         }
         is UiState.Success -> {
-            messeagese = res.data
+            action(res.data)
             chatViewModel.setIdelForGesstMasse()
         }
     }
-    when (val res = chatViewModel.newMessaes.collectAsStateWithLifecycle().value) {
-        is UpdateStatChatState.Falier -> {
-            CoustemDiloage(
-                dialogOpene = true,
-                HeadlineMessage = "Failure",
-                MainMessage = res.Errors!!
-            )
-        }
-        UpdateStatChatState.Idel -> {
 
-        }
-        is UpdateStatChatState.Success -> {
-            if (res.data.messeg.isNotEmpty()) {
-                messeagese = messeagese?.plus(res.data)
-            }
-
-
-            //Log.d("Aboud", messeagese!![messeagese!!.size-2].messeg!!)
-            chatViewModel.setIdelForNewMassege()
-
-        }
-    }
-    Column() {
-        LazyColumn(modifier = Modifier.weight(6f)) {
-            if (messeagese != null) {
-                itemsIndexed(messeagese!!) { index, item ->
-                    val IsHeSender =
-                        item.meesageSenderUserID == chatViewModel.ResverData!!.userInfo?.UserID
-                    Box(
-                        contentAlignment = if (IsHeSender) {
-                            Alignment.CenterEnd
-                        } else {
-                            Alignment.CenterStart
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .width(200.dp)
-                                .drawBehind {
-                                    val cornerRadius = 10.dp.toPx()
-                                    val triangleHieght = 20.dp.toPx()
-                                    val triangelWidth = 25.dp.toPx()
-                                    val trianglePath = Path().apply {
-                                        if (IsHeSender) {
-                                            moveTo(size.width, size.height - cornerRadius)
-                                            lineTo(size.width, size.height + triangleHieght)
-                                            lineTo(
-                                                size.width - triangelWidth,
-                                                size.height - cornerRadius
-                                            )
-                                            close()
-                                        } else {
-                                            moveTo(0f, size.height - cornerRadius)
-                                            lineTo(0f, size.height + triangleHieght)
-                                            lineTo(triangelWidth, size.height - cornerRadius)
-                                            close()
-                                        }
-                                    }
-                                    drawPath(
-                                        path = trianglePath,
-                                        color = if (IsHeSender) Color.Black else Color.Gray
-                                    )
-                                }
-                                .background(
-                                    color = if (IsHeSender) Color.Black else Color.Gray,
-                                    shape = RoundedCornerShape(10.dp)
-
-                                )
-                                .padding(8.dp)
-
-                        ) {
-                            Text(
-                                text = item.meesageSenderUserID,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                            Text(
-                                text = item.date,
-                                color = Color.White
-                            )
-                            Text(
-                                text = item.messeg,
-                                color = Color.White,
-                                modifier = Modifier.align(Alignment.End)
-                            )
-                        }
-
-
-                    }
-                    Spacer(modifier = Modifier.height(32.dp))
-                }
-            }
-
-
-        }
-        Row(
-            modifier = Modifier.weight(1f)
-        ) {
-            var text by remember {
-                mutableStateOf(
-                    ""
-                )
-            }
-            when (val rest = chatViewModel.SendMessageState.collectAsStateWithLifecycle().value) {
-                is MessegSendState.Falier -> {
-                    CoustemDiloage(
-                        dialogOpene = true,
-                        HeadlineMessage = "Failure",
-                        MainMessage = rest.Errors!!
-                    )
-                }
-                MessegSendState.Idel -> {
-
-                }
-                MessegSendState.Success -> {
-                    text = ""
-                    chatViewModel.setDoneMeesage()
-                }
-            }
-            val ChatSendIntent = remember {
-                {
-                    chatViewModel.IntentSendMeesage(
-                        MessegDiteals(
-                            messeg = text,
-                            messageRevsersUserID = chatViewModel.ResverData!!.userInfo!!.UserID!!,
-                            meesageSenderUserID = chatViewModel.SenderuseuserData!!.userInfo!!.UserID!!,
-                            date = getData()
-                        )
-                    )
-                }
-            }
-            TextField(
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = Color.Black,
-                    disabledTextColor = Color.Transparent,
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(40.dp),
-                value = text,
-                onValueChange = {
-                    text = it
-                },
-
-                )
-            IconButton(onClick = { ChatSendIntent() }
-
-
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Send,
-                    tint = Color.Green,
-                    contentDescription = "Send"
-                )
-            }
-
-        }
-    }
 }
 
 

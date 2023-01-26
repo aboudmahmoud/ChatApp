@@ -72,14 +72,14 @@ object FirebaseStorageConstants {
 
 object DataUser{
     private lateinit var _SenderData: CurrenUserStatis
-    private lateinit var _LocalUserData: CurrenUserStatis
+    private lateinit var _ReciverData: CurrenUserStatis
     val SenderData get()= _SenderData
-    val ReciverData get() = _LocalUserData
+    val ReciverData get() = _ReciverData
     fun SetDataForSender(SenderDate:CurrenUserStatis){
         _SenderData=SenderDate
     }
-    fun SetDataForLocalUser(LocalUserDate:CurrenUserStatis){
-        _LocalUserData=LocalUserDate
+    fun SetDataForReciver(ReciverData:CurrenUserStatis){
+        _ReciverData=ReciverData
     }
 }
 
